@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="工具 rsync fswatch xargs expect  简单的介绍使用fswatch监听文件变化https://github.com/emcrisostomo/fswatch fswatch -o &amp;quot;path&amp;quot; fswatch -o path | xargs -n1 -I{} &amp;quot;program&amp;quot; 使用xargs传递命令参数(和管道的区别 ‘|’ )ht">
+<meta name="description" content="工具 rsync fswatch xargs expect  简单的介绍使用fswatch监听文件变化fswatch -o &amp;quot;path&amp;quot; fswatch -o path | xargs -n1 -I{} &amp;quot;program&amp;quot; 使用xargs传递命令参数(和管道的区别 ‘|’ )对于一些不接受标准输入的程序如kill，rmxargs可以把标准输入转换成命令行参数">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一种远程文件同步方案">
 <meta property="og:url" content="http://yoursite.com/2018/06/16/File-Sync-With-Remote-Host/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="工具 rsync fswatch xargs expect  简单的介绍使用fswatch监听文件变化https://github.com/emcrisostomo/fswatch fswatch -o &amp;quot;path&amp;quot; fswatch -o path | xargs -n1 -I{} &amp;quot;program&amp;quot; 使用xargs传递命令参数(和管道的区别 ‘|’ )ht">
+<meta property="og:description" content="工具 rsync fswatch xargs expect  简单的介绍使用fswatch监听文件变化fswatch -o &amp;quot;path&amp;quot; fswatch -o path | xargs -n1 -I{} &amp;quot;program&amp;quot; 使用xargs传递命令参数(和管道的区别 ‘|’ )对于一些不接受标准输入的程序如kill，rmxargs可以把标准输入转换成命令行参数">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-23T07:55:29.846Z">
+<meta property="og:updated_time" content="2018-06-23T08:31:36.249Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一种远程文件同步方案">
-<meta name="twitter:description" content="工具 rsync fswatch xargs expect  简单的介绍使用fswatch监听文件变化https://github.com/emcrisostomo/fswatch fswatch -o &amp;quot;path&amp;quot; fswatch -o path | xargs -n1 -I{} &amp;quot;program&amp;quot; 使用xargs传递命令参数(和管道的区别 ‘|’ )ht">
+<meta name="twitter:description" content="工具 rsync fswatch xargs expect  简单的介绍使用fswatch监听文件变化fswatch -o &amp;quot;path&amp;quot; fswatch -o path | xargs -n1 -I{} &amp;quot;program&amp;quot; 使用xargs传递命令参数(和管道的区别 ‘|’ )对于一些不接受标准输入的程序如kill，rmxargs可以把标准输入转换成命令行参数">
 
 
 
@@ -305,18 +305,14 @@
 <li>xargs</li>
 <li>expect</li>
 </ul>
-<h1 id="简单的介绍"><a href="#简单的介绍" class="headerlink" title="简单的介绍"></a>简单的介绍</h1><h2 id="使用fswatch监听文件变化"><a href="#使用fswatch监听文件变化" class="headerlink" title="使用fswatch监听文件变化"></a>使用fswatch监听文件变化</h2><p><a href="https://github.com/emcrisostomo/fswatch" target="_blank" rel="noopener">https://github.com/emcrisostomo/fswatch</a></p>
-<pre><code>fswatch -o &quot;path&quot;
+<h1 id="简单的介绍"><a href="#简单的介绍" class="headerlink" title="简单的介绍"></a>简单的介绍</h1><h2 id="使用fswatch监听文件变化"><a href="#使用fswatch监听文件变化" class="headerlink" title="使用fswatch监听文件变化"></a>使用fswatch监听文件变化</h2><pre><code>fswatch -o &quot;path&quot;
 fswatch -o path | xargs -n1 -I{} &quot;program&quot;
-</code></pre><h2 id="使用xargs传递命令参数-和管道的区别-‘-’"><a href="#使用xargs传递命令参数-和管道的区别-‘-’" class="headerlink" title="使用xargs传递命令参数(和管道的区别 ‘|’ )"></a>使用xargs传递命令参数(和管道的区别 <strong>‘|’</strong> )</h2><p><a href="https://www.cnblogs.com/wangqiguo/p/6464234.html" target="_blank" rel="noopener">https://www.cnblogs.com/wangqiguo/p/6464234.html</a></p>
-<p>对于一些不接受标准输入的程序如kill，rm<br>xargs可以把标准输入转换成命令行参数</p>
+</code></pre><h2 id="使用xargs传递命令参数-和管道的区别-‘-’"><a href="#使用xargs传递命令参数-和管道的区别-‘-’" class="headerlink" title="使用xargs传递命令参数(和管道的区别 ‘|’ )"></a>使用xargs传递命令参数(和管道的区别 <strong>‘|’</strong> )</h2><p>对于一些不接受标准输入的程序如kill，rm<br>xargs可以把标准输入转换成命令行参数</p>
 <pre><code>-n1
 </code></pre><p>代表每次传递一个参数</p>
-<h2 id="使用expect"><a href="#使用expect" class="headerlink" title="使用expect"></a>使用expect</h2><p><a href="https://www.jianshu.com/p/70556b1ce932" target="_blank" rel="noopener">https://www.jianshu.com/p/70556b1ce932</a></p>
-<p>处理命令交互，例如输入用户名密码<br>例如scp输入后需要输入密码，expect就可以实现收到密码提示后自动输入密码</p>
+<h2 id="使用expect"><a href="#使用expect" class="headerlink" title="使用expect"></a>使用expect</h2><p>处理命令交互，例如输入用户名密码<br>例如scp输入后需要输入密码，expect就可以实现收到密码提示后自动输入密码</p>
 <p>spawn启动的命令的输出会被expect捕获到</p>
-<h2 id="使用rsync同步文件"><a href="#使用rsync同步文件" class="headerlink" title="使用rsync同步文件"></a>使用rsync同步文件</h2><p><a href="https://askubuntu.com/questions/85137/rsync-not-actually-copying-files%0A" target="_blank" rel="noopener">https://askubuntu.com/questions/85137/rsync-not-actually-copying-files%0A</a></p>
-<p>文件路径尾部很重要<br>rsync 可以同步文件，且只传送修改部分</p>
+<h2 id="使用rsync同步文件"><a href="#使用rsync同步文件" class="headerlink" title="使用rsync同步文件"></a>使用rsync同步文件</h2><p>文件路径尾部很重要<br>rsync 可以同步文件，且只传送修改部分</p>
 <pre><code>rsync -rvu --delete --exclude-from=&apos;ignore.txt&apos; &lt;source&gt; &lt;destination&gt;
 </code></pre><p>选项含义</p>
 <pre><code>-r
@@ -368,7 +364,17 @@ fswatch -o -l 3 $SRC_DIRECTORY | xargs -n1 -I{} rsync -rvu --delete --exclude-fr
 # build_out/*
 build/*
 helloworld
-</code></pre>
+</code></pre><h1 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h1><ol>
+<li><p><a href="https://github.com/emcrisostomo/fswatch" target="_blank" rel="noopener">fswatch</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/wangqiguo/p/6464234.html" target="_blank" rel="noopener">xargs命令详解，xargs与管道的区别</a></p>
+</li>
+<li><p><a href="https://www.jianshu.com/p/70556b1ce932" target="_blank" rel="noopener">Linux Expect 简介和使用实例</a></p>
+</li>
+<li><p><a href="https://askubuntu.com/questions/85137/rsync-not-actually-copying-files" target="_blank" rel="noopener">rsync not actually copying files</a></p>
+</li>
+</ol>
+
       
     </div>
     
@@ -498,7 +504,7 @@ helloworld
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#工具"><span class="nav-number">1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简单的介绍"><span class="nav-number">2.</span> <span class="nav-text">简单的介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用fswatch监听文件变化"><span class="nav-number">2.1.</span> <span class="nav-text">使用fswatch监听文件变化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用xargs传递命令参数-和管道的区别-‘-’"><span class="nav-number">2.2.</span> <span class="nav-text">使用xargs传递命令参数(和管道的区别 ‘|’ )</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用expect"><span class="nav-number">2.3.</span> <span class="nav-text">使用expect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用rsync同步文件"><span class="nav-number">2.4.</span> <span class="nav-text">使用rsync同步文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最终脚本"><span class="nav-number">3.</span> <span class="nav-text">最终脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步脚本"><span class="nav-number">3.1.</span> <span class="nav-text">同步脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监听脚本"><span class="nav-number">3.2.</span> <span class="nav-text">监听脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忽略文件列表示例"><span class="nav-number">3.3.</span> <span class="nav-text">忽略文件列表示例</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#工具"><span class="nav-number">1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简单的介绍"><span class="nav-number">2.</span> <span class="nav-text">简单的介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用fswatch监听文件变化"><span class="nav-number">2.1.</span> <span class="nav-text">使用fswatch监听文件变化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用xargs传递命令参数-和管道的区别-‘-’"><span class="nav-number">2.2.</span> <span class="nav-text">使用xargs传递命令参数(和管道的区别 ‘|’ )</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用expect"><span class="nav-number">2.3.</span> <span class="nav-text">使用expect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用rsync同步文件"><span class="nav-number">2.4.</span> <span class="nav-text">使用rsync同步文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最终脚本"><span class="nav-number">3.</span> <span class="nav-text">最终脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步脚本"><span class="nav-number">3.1.</span> <span class="nav-text">同步脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监听脚本"><span class="nav-number">3.2.</span> <span class="nav-text">监听脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忽略文件列表示例"><span class="nav-number">3.3.</span> <span class="nav-text">忽略文件列表示例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资源"><span class="nav-number">4.</span> <span class="nav-text">参考资源</span></a></li></ol></div>
             
 
           </div>
