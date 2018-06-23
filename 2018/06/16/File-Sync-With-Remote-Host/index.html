@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="工具 rsync fswatch xargs expect  简单的介绍使用fswatch监听文件变化fswatch -o &amp;quot;path&amp;quot; fswatch -o path | xargs -n1 -I{} &amp;quot;program&amp;quot; 使用xargs传递命令参数(和管道的区别 ‘|’ )对于一些不接受标准输入的程序如kill，rmxargs可以把标准输入转换成命令行参数">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-23T08:31:36.249Z">
+<meta property="og:updated_time" content="2018-06-23T08:33:29.078Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一种远程文件同步方案">
 <meta name="twitter:description" content="工具 rsync fswatch xargs expect  简单的介绍使用fswatch监听文件变化fswatch -o &amp;quot;path&amp;quot; fswatch -o path | xargs -n1 -I{} &amp;quot;program&amp;quot; 使用xargs传递命令参数(和管道的区别 ‘|’ )对于一些不接受标准输入的程序如kill，rmxargs可以把标准输入转换成命令行参数">
@@ -365,14 +365,10 @@ fswatch -o -l 3 $SRC_DIRECTORY | xargs -n1 -I{} rsync -rvu --delete --exclude-fr
 build/*
 helloworld
 </code></pre><h1 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h1><ol>
-<li><p><a href="https://github.com/emcrisostomo/fswatch" target="_blank" rel="noopener">fswatch</a></p>
-</li>
-<li><p><a href="https://www.cnblogs.com/wangqiguo/p/6464234.html" target="_blank" rel="noopener">xargs命令详解，xargs与管道的区别</a></p>
-</li>
-<li><p><a href="https://www.jianshu.com/p/70556b1ce932" target="_blank" rel="noopener">Linux Expect 简介和使用实例</a></p>
-</li>
-<li><p><a href="https://askubuntu.com/questions/85137/rsync-not-actually-copying-files" target="_blank" rel="noopener">rsync not actually copying files</a></p>
-</li>
+<li><a href="https://github.com/emcrisostomo/fswatch" target="_blank" rel="noopener">fswatch</a></li>
+<li><a href="https://www.cnblogs.com/wangqiguo/p/6464234.html" target="_blank" rel="noopener">xargs命令详解，xargs与管道的区别</a></li>
+<li><a href="https://www.jianshu.com/p/70556b1ce932" target="_blank" rel="noopener">Linux Expect 简介和使用实例</a></li>
+<li><a href="https://askubuntu.com/questions/85137/rsync-not-actually-copying-files" target="_blank" rel="noopener">rsync not actually copying files</a></li>
 </ol>
 
       
