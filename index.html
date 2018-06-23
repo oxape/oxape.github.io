@@ -229,6 +229,195 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/16/File-Sync-With-Remote-Host/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/16/File-Sync-With-Remote-Host/" itemprop="url">一种远程文件同步方案</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-16T15:26:38+08:00">
+                2018-06-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><ul>
+<li>rsync</li>
+<li>fswatch</li>
+<li>xargs</li>
+<li>expect</li>
+</ul>
+<h1 id="简单的介绍"><a href="#简单的介绍" class="headerlink" title="简单的介绍"></a>简单的介绍</h1><h2 id="使用fswatch监听文件变化"><a href="#使用fswatch监听文件变化" class="headerlink" title="使用fswatch监听文件变化"></a>使用fswatch监听文件变化</h2><p><a href="https://github.com/emcrisostomo/fswatch" target="_blank" rel="noopener">https://github.com/emcrisostomo/fswatch</a></p>
+<pre><code>fswatch -o &quot;path&quot;
+fswatch -o path | xargs -n1 -I{} &quot;program&quot;
+</code></pre><h2 id="使用xargs传递命令参数-和管道的区别-‘-’"><a href="#使用xargs传递命令参数-和管道的区别-‘-’" class="headerlink" title="使用xargs传递命令参数(和管道的区别 ‘|’ )"></a>使用xargs传递命令参数(和管道的区别 <strong>‘|’</strong> )</h2><p><a href="https://www.cnblogs.com/wangqiguo/p/6464234.html" target="_blank" rel="noopener">https://www.cnblogs.com/wangqiguo/p/6464234.html</a></p>
+<p>对于一些不接受标准输入的程序如kill，rm<br>xargs可以把标准输入转换成命令行参数</p>
+<pre><code>-n1
+</code></pre><p>代表每次传递一个参数</p>
+<h2 id="使用expect"><a href="#使用expect" class="headerlink" title="使用expect"></a>使用expect</h2><p><a href="https://www.jianshu.com/p/70556b1ce932" target="_blank" rel="noopener">https://www.jianshu.com/p/70556b1ce932</a></p>
+<p>处理命令交互，例如输入用户名密码<br>例如scp输入后需要输入密码，expect就可以实现收到密码提示后自动输入密码</p>
+<p>spawn启动的命令的输出会被expect捕获到</p>
+<h2 id="使用rsync同步文件"><a href="#使用rsync同步文件" class="headerlink" title="使用rsync同步文件"></a>使用rsync同步文件</h2><p><a href="https://askubuntu.com/questions/85137/rsync-not-actually-copying-files%0A" target="_blank" rel="noopener">https://askubuntu.com/questions/85137/rsync-not-actually-copying-files%0A</a></p>
+<p>文件路径尾部很重要<br>rsync 可以同步文件，且只传送修改部分</p>
+<pre><code>rsync -rvu --delete --exclude-from=&apos;ignore.txt&apos; &lt;source&gt; &lt;destination&gt;
+</code></pre><p>选项含义</p>
+<pre><code>-r
+</code></pre><p>递归</p>
+<pre><code>--delete
+</code></pre><p>同步删除</p>
+<pre><code>-v
+</code></pre><p>显示细节</p>
+<pre><code>-u
+</code></pre><p>仅仅进行更新，也就是跳过所有已经存在于DST，并且文件时间晚于要备份的文件，不覆盖更新的文件。</p>
+<pre><code>--exclude-from=FILE 
+</code></pre><p>排除FILE中指定模式的文件。</p>
+<h1 id="最终脚本"><a href="#最终脚本" class="headerlink" title="最终脚本"></a>最终脚本</h1><h2 id="同步脚本"><a href="#同步脚本" class="headerlink" title="同步脚本"></a>同步脚本</h2><pre><code>#!/usr/local/bin/expect
+set timeout 3
+
+set SRC_DIRECTORY src
+set DST_DIRECTORY dest_parent/
+# 或者 尾部很重要
+# set SRC_DIRECTORY src/
+# set DST_DIRECTORY dest
+set PASSWORD password
+
+#spawn启动的命令的输出可以被expect捕获到
+spawn rsync -rv -e ssh ${SRC_DIRECTORY} ${DST_DIRECTORY}
+expect &quot;password:&quot;
+send &quot;${PASSWORD}\r&quot;
+interact
+</code></pre><h2 id="监听脚本"><a href="#监听脚本" class="headerlink" title="监听脚本"></a>监听脚本</h2><pre><code>#!/bin/sh
+
+#失败后不退出
+set +e
+#回显命令
+set -v on
+
+set SRC_DIRECTORY src
+set DST_DIRECTORY dest_parent/
+# 或者 尾部很重要
+# set SRC_DIRECTORY src/
+# set DST_DIRECTORY dest
+
+# echo $SRC_DIRECTORY
+
+#fswatch -o -l 3 $SRC_DIRECTORY | xargs -n1 -I{} expect fsync.sh
+#上面那种方案没成功，有空在研究
+#在主机.ssh/authorized_key加入客户端ssh key后直接用了下面一种方案
+fswatch -o -l 3 $SRC_DIRECTORY | xargs -n1 -I{} rsync -rvu --delete --exclude-from=&apos;ignore.txt&apos; ssh ${SRC_DIRECTORY} ${DST_DIRECTORY}
+</code></pre><h2 id="忽略文件列表示例"><a href="#忽略文件列表示例" class="headerlink" title="忽略文件列表示例"></a>忽略文件列表示例</h2><pre><code>uikit/example/directfb/build_out/
+# 注意区别下面这句只会忽略build_out下的子目录，不会忽略build_out本身
+#uikit/example/directfb/build_out/*
+uikit/example/gtk/build_out/
+build/*
+helloworld
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/12/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -390,7 +579,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

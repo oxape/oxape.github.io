@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="工具 rsync fswatch xargs expect  简单的介绍使用fswatch监听文件变化https://github.com/emcrisostomo/fswatch fswatch -o &amp;quot;path&amp;quot; fswatch -o path | xargs -n1 -I{} &amp;quot;program&amp;quot; 使用xargs传递命令参数(和管道的区别 ‘|’ )ht">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2018/05/12/hello-world/index.html">
+<meta property="og:title" content="一种远程文件同步方案">
+<meta property="og:url" content="http://yoursite.com/2018/06/16/File-Sync-With-Remote-Host/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="工具 rsync fswatch xargs expect  简单的介绍使用fswatch监听文件变化https://github.com/emcrisostomo/fswatch fswatch -o &amp;quot;path&amp;quot; fswatch -o path | xargs -n1 -I{} &amp;quot;program&amp;quot; 使用xargs传递命令参数(和管道的区别 ‘|’ )ht">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-12T15:53:47.215Z">
+<meta property="og:updated_time" content="2018-06-23T07:28:19.583Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="一种远程文件同步方案">
+<meta name="twitter:description" content="工具 rsync fswatch xargs expect  简单的介绍使用fswatch监听文件变化https://github.com/emcrisostomo/fswatch fswatch -o &amp;quot;path&amp;quot; fswatch -o path | xargs -n1 -I{} &amp;quot;program&amp;quot; 使用xargs传递命令参数(和管道的区别 ‘|’ )ht">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/05/12/hello-world/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/06/16/File-Sync-With-Remote-Host/"/>
 
 
 
 
 
-  <title>Hello World | Hexo</title>
+  <title>一种远程文件同步方案 | Hexo</title>
   
 
 
@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/12/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/16/File-Sync-With-Remote-Host/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline">一种远程文件同步方案</h1>
         
 
         <div class="post-meta">
@@ -261,8 +261,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-12T23:53:47+08:00">
-                2018-05-12
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-16T15:26:38+08:00">
+                2018-06-16
               </time>
             
 
@@ -299,16 +299,77 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><ul>
+<li>rsync</li>
+<li>fswatch</li>
+<li>xargs</li>
+<li>expect</li>
+</ul>
+<h1 id="简单的介绍"><a href="#简单的介绍" class="headerlink" title="简单的介绍"></a>简单的介绍</h1><h2 id="使用fswatch监听文件变化"><a href="#使用fswatch监听文件变化" class="headerlink" title="使用fswatch监听文件变化"></a>使用fswatch监听文件变化</h2><p><a href="https://github.com/emcrisostomo/fswatch" target="_blank" rel="noopener">https://github.com/emcrisostomo/fswatch</a></p>
+<pre><code>fswatch -o &quot;path&quot;
+fswatch -o path | xargs -n1 -I{} &quot;program&quot;
+</code></pre><h2 id="使用xargs传递命令参数-和管道的区别-‘-’"><a href="#使用xargs传递命令参数-和管道的区别-‘-’" class="headerlink" title="使用xargs传递命令参数(和管道的区别 ‘|’ )"></a>使用xargs传递命令参数(和管道的区别 <strong>‘|’</strong> )</h2><p><a href="https://www.cnblogs.com/wangqiguo/p/6464234.html" target="_blank" rel="noopener">https://www.cnblogs.com/wangqiguo/p/6464234.html</a></p>
+<p>对于一些不接受标准输入的程序如kill，rm<br>xargs可以把标准输入转换成命令行参数</p>
+<pre><code>-n1
+</code></pre><p>代表每次传递一个参数</p>
+<h2 id="使用expect"><a href="#使用expect" class="headerlink" title="使用expect"></a>使用expect</h2><p><a href="https://www.jianshu.com/p/70556b1ce932" target="_blank" rel="noopener">https://www.jianshu.com/p/70556b1ce932</a></p>
+<p>处理命令交互，例如输入用户名密码<br>例如scp输入后需要输入密码，expect就可以实现收到密码提示后自动输入密码</p>
+<p>spawn启动的命令的输出会被expect捕获到</p>
+<h2 id="使用rsync同步文件"><a href="#使用rsync同步文件" class="headerlink" title="使用rsync同步文件"></a>使用rsync同步文件</h2><p><a href="https://askubuntu.com/questions/85137/rsync-not-actually-copying-files%0A" target="_blank" rel="noopener">https://askubuntu.com/questions/85137/rsync-not-actually-copying-files%0A</a></p>
+<p>文件路径尾部很重要<br>rsync 可以同步文件，且只传送修改部分</p>
+<pre><code>rsync -rvu --delete --exclude-from=&apos;ignore.txt&apos; &lt;source&gt; &lt;destination&gt;
+</code></pre><p>选项含义</p>
+<pre><code>-r
+</code></pre><p>递归</p>
+<pre><code>--delete
+</code></pre><p>同步删除</p>
+<pre><code>-v
+</code></pre><p>显示细节</p>
+<pre><code>-u
+</code></pre><p>仅仅进行更新，也就是跳过所有已经存在于DST，并且文件时间晚于要备份的文件，不覆盖更新的文件。</p>
+<pre><code>--exclude-from=FILE 
+</code></pre><p>排除FILE中指定模式的文件。</p>
+<h1 id="最终脚本"><a href="#最终脚本" class="headerlink" title="最终脚本"></a>最终脚本</h1><h2 id="同步脚本"><a href="#同步脚本" class="headerlink" title="同步脚本"></a>同步脚本</h2><pre><code>#!/usr/local/bin/expect
+set timeout 3
 
+set SRC_DIRECTORY src
+set DST_DIRECTORY dest_parent/
+# 或者 尾部很重要
+# set SRC_DIRECTORY src/
+# set DST_DIRECTORY dest
+set PASSWORD password
+
+#spawn启动的命令的输出可以被expect捕获到
+spawn rsync -rv -e ssh ${SRC_DIRECTORY} ${DST_DIRECTORY}
+expect &quot;password:&quot;
+send &quot;${PASSWORD}\r&quot;
+interact
+</code></pre><h2 id="监听脚本"><a href="#监听脚本" class="headerlink" title="监听脚本"></a>监听脚本</h2><pre><code>#!/bin/sh
+
+#失败后不退出
+set +e
+#回显命令
+set -v on
+
+set SRC_DIRECTORY src
+set DST_DIRECTORY dest_parent/
+# 或者 尾部很重要
+# set SRC_DIRECTORY src/
+# set DST_DIRECTORY dest
+
+# echo $SRC_DIRECTORY
+
+#fswatch -o -l 3 $SRC_DIRECTORY | xargs -n1 -I{} expect fsync.sh
+#上面那种方案没成功，有空在研究
+#在主机.ssh/authorized_key加入客户端ssh key后直接用了下面一种方案
+fswatch -o -l 3 $SRC_DIRECTORY | xargs -n1 -I{} rsync -rvu --delete --exclude-from=&apos;ignore.txt&apos; ssh ${SRC_DIRECTORY} ${DST_DIRECTORY}
+</code></pre><h2 id="忽略文件列表示例"><a href="#忽略文件列表示例" class="headerlink" title="忽略文件列表示例"></a>忽略文件列表示例</h2><pre><code>uikit/example/directfb/build_out/
+# 注意区别下面这句只会忽略build_out下的子目录，不会忽略build_out本身
+#uikit/example/directfb/build_out/*
+uikit/example/gtk/build_out/
+build/*
+helloworld
+</code></pre>
       
     </div>
     
@@ -332,15 +393,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/05/12/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/16/File-Sync-With-Remote-Host/" rel="prev" title="一种远程文件同步方案">
-                一种远程文件同步方案 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -454,7 +515,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#工具"><span class="nav-number">1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简单的介绍"><span class="nav-number">2.</span> <span class="nav-text">简单的介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用fswatch监听文件变化"><span class="nav-number">2.1.</span> <span class="nav-text">使用fswatch监听文件变化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用xargs传递命令参数-和管道的区别-‘-’"><span class="nav-number">2.2.</span> <span class="nav-text">使用xargs传递命令参数(和管道的区别 ‘|’ )</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用expect"><span class="nav-number">2.3.</span> <span class="nav-text">使用expect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用rsync同步文件"><span class="nav-number">2.4.</span> <span class="nav-text">使用rsync同步文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最终脚本"><span class="nav-number">3.</span> <span class="nav-text">最终脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步脚本"><span class="nav-number">3.1.</span> <span class="nav-text">同步脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监听脚本"><span class="nav-number">3.2.</span> <span class="nav-text">监听脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忽略文件列表示例"><span class="nav-number">3.3.</span> <span class="nav-text">忽略文件列表示例</span></a></li></ol></li></ol></div>
             
 
           </div>
