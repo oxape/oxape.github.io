@@ -353,22 +353,22 @@ set +e
 set -v on
 
 set SRC_DIRECTORY src
-set DST_DIRECTORY dest_parent/
+set DST_DIRECTORY ubuntu@xx.xx.xx.xx:dest_parent/
 # 或者 尾部很重要
 # set SRC_DIRECTORY src/
-# set DST_DIRECTORY dest
+# set DST_DIRECTORY ubuntu@xx.xx.xx.xx:dest
 
 # echo $SRC_DIRECTORY
 
 #fswatch -o -l 3 $SRC_DIRECTORY | xargs -n1 -I{} expect fsync.sh
 #上面那种方案没成功，有空在研究
 #在主机.ssh/authorized_key加入客户端ssh key后直接用了下面一种方案
-fswatch -o -l 3 $SRC_DIRECTORY | xargs -n1 -I{} rsync -rvu --delete --exclude-from=&apos;ignore.txt&apos; ssh ${SRC_DIRECTORY} ${DST_DIRECTORY}
+fswatch -o -l 3 $SRC_DIRECTORY | xargs -n1 -I{} rsync -rvu --delete --exclude-from=&apos;ignore.txt&apos; -e ssh ${SRC_DIRECTORY} ${DST_DIRECTORY}
 </code></pre><h2 id="忽略文件列表示例"><a href="#忽略文件列表示例" class="headerlink" title="忽略文件列表示例"></a>忽略文件列表示例</h2><pre><code>build_out/
 # 注意区别下面这句只会忽略build_out下的子目录，不会忽略build_out本身
 # build_out/*
 build/*
-a.out
+helloworld
 </code></pre>
           
         
