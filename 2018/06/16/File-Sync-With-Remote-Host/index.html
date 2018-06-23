@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="工具 rsync fswatch xargs expect  简单的介绍使用fswatch监听文件变化https://github.com/emcrisostomo/fswatch fswatch -o &amp;quot;path&amp;quot; fswatch -o path | xargs -n1 -I{} &amp;quot;program&amp;quot; 使用xargs传递命令参数(和管道的区别 ‘|’ )ht">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-23T07:28:19.583Z">
+<meta property="og:updated_time" content="2018-06-23T07:39:37.799Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一种远程文件同步方案">
 <meta name="twitter:description" content="工具 rsync fswatch xargs expect  简单的介绍使用fswatch监听文件变化https://github.com/emcrisostomo/fswatch fswatch -o &amp;quot;path&amp;quot; fswatch -o path | xargs -n1 -I{} &amp;quot;program&amp;quot; 使用xargs传递命令参数(和管道的区别 ‘|’ )ht">
@@ -363,12 +363,11 @@ set DST_DIRECTORY dest_parent/
 #上面那种方案没成功，有空在研究
 #在主机.ssh/authorized_key加入客户端ssh key后直接用了下面一种方案
 fswatch -o -l 3 $SRC_DIRECTORY | xargs -n1 -I{} rsync -rvu --delete --exclude-from=&apos;ignore.txt&apos; ssh ${SRC_DIRECTORY} ${DST_DIRECTORY}
-</code></pre><h2 id="忽略文件列表示例"><a href="#忽略文件列表示例" class="headerlink" title="忽略文件列表示例"></a>忽略文件列表示例</h2><pre><code>uikit/example/directfb/build_out/
+</code></pre><h2 id="忽略文件列表示例"><a href="#忽略文件列表示例" class="headerlink" title="忽略文件列表示例"></a>忽略文件列表示例</h2><pre><code>build_out/
 # 注意区别下面这句只会忽略build_out下的子目录，不会忽略build_out本身
-#uikit/example/directfb/build_out/*
-uikit/example/gtk/build_out/
+# build_out/*
 build/*
-helloworld
+a.out
 </code></pre>
       
     </div>
@@ -389,22 +388,6 @@ helloworld
       
       
 
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/05/12/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-          </div>
-        </div>
       
 
       
@@ -478,7 +461,7 @@ helloworld
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
