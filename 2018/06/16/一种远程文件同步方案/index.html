@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="kgsAMSZq6hZ0n3mEmx2PjBnLNb4j6iBQDKTZ8nKlX8I">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"waline","storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="工具 rsync  fswatch  xargs  expect   简单的介绍使用fswatch监听文件变化fswatch -o &quot;path&quot; fswatch -o path | xargs -n1 -I&amp;#123;&amp;#125; &quot;program&quot;  使用xargs传递命令参数(和管道的区别 ‘|’ )对于一些不接受标准输入的程序如kill，rmxargs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一种远程文件同步方案">
+<meta property="og:url" content="http://example.com/2018/06/16/%E4%B8%80%E7%A7%8D%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%90%8C%E6%AD%A5%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="Leo Dong&#39;s Blog">
+<meta property="og:description" content="工具 rsync  fswatch  xargs  expect   简单的介绍使用fswatch监听文件变化fswatch -o &quot;path&quot; fswatch -o path | xargs -n1 -I&amp;#123;&amp;#125; &quot;program&quot;  使用xargs传递命令参数(和管道的区别 ‘|’ )对于一些不接受标准输入的程序如kill，rmxargs">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-06-16T01:26:14.000Z">
+<meta property="article:modified_time" content="2018-06-16T01:26:14.000Z">
+<meta property="article:author" content="Leo Dong">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2018/06/16/%E4%B8%80%E7%A7%8D%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%90%8C%E6%AD%A5%E6%96%B9%E6%A1%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>一种远程文件同步方案 | Leo Dong's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Leo Dong's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/06/16/%E4%B8%80%E7%A7%8D%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%90%8C%E6%AD%A5%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Leo Dong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Leo Dong's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一种远程文件同步方案
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-16 09:26:14" itemprop="dateCreated datePublished" datetime="2018-06-16T09:26:14+08:00">2018-06-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><ul>
+<li><p>rsync</p>
+</li>
+<li><p>fswatch</p>
+</li>
+<li><p>xargs</p>
+</li>
+<li><p>expect</p>
+</li>
+</ul>
+<h1 id="简单的介绍"><a href="#简单的介绍" class="headerlink" title="简单的介绍"></a>简单的介绍</h1><h2 id="使用fswatch监听文件变化"><a href="#使用fswatch监听文件变化" class="headerlink" title="使用fswatch监听文件变化"></a>使用fswatch监听文件变化</h2><pre><code>fswatch -o &quot;path&quot;
+fswatch -o path | xargs -n1 -I&#123;&#125; &quot;program&quot;
+</code></pre>
+<h2 id="使用xargs传递命令参数-和管道的区别-‘-’"><a href="#使用xargs传递命令参数-和管道的区别-‘-’" class="headerlink" title="使用xargs传递命令参数(和管道的区别 ‘|’ )"></a>使用xargs传递命令参数(和管道的区别 <strong>‘|’</strong> )</h2><p>对于一些不接受标准输入的程序如kill，rm<br>xargs可以把标准输入转换成命令行参数</p>
+<pre><code>-n1
+</code></pre>
+<p>代表每次传递一个参数</p>
+<h2 id="使用expect"><a href="#使用expect" class="headerlink" title="使用expect"></a>使用expect</h2><p>处理命令交互，例如输入用户名密码<br>例如scp输入后需要输入密码，expect就可以实现收到密码提示后自动输入密码</p>
+<p>spawn启动的命令的输出会被expect捕获到</p>
+<h2 id="使用rsync同步文件"><a href="#使用rsync同步文件" class="headerlink" title="使用rsync同步文件"></a>使用rsync同步文件</h2><p>文件路径尾部很重要<br>rsync 可以同步文件，且只传送修改部分</p>
+<pre><code>rsync -rvu --delete --exclude-from=&#39;ignore.txt&#39; &lt;source&gt; &lt;destination&gt;
+</code></pre>
+<p>选项含义</p>
+<pre><code>-r
+</code></pre>
+<p>递归</p>
+<pre><code>--delete
+</code></pre>
+<p>同步删除</p>
+<pre><code>-v
+</code></pre>
+<p>显示细节</p>
+<pre><code>-u
+</code></pre>
+<p>仅仅进行更新，也就是跳过所有已经存在于DST，并且文件时间晚于要备份的文件，不覆盖更新的文件。</p>
+<pre><code>--exclude-from=FILE 
+</code></pre>
+<p>排除FILE中指定模式的文件。</p>
+<h1 id="最终脚本"><a href="#最终脚本" class="headerlink" title="最终脚本"></a>最终脚本</h1><h2 id="同步脚本"><a href="#同步脚本" class="headerlink" title="同步脚本"></a>同步脚本</h2><pre><code>#!/usr/local/bin/expect
+set timeout 3
+
+set SRC_DIRECTORY src
+set DST_DIRECTORY dest_parent/
+# 或者 尾部很重要
+# set SRC_DIRECTORY src/
+# set DST_DIRECTORY dest
+set PASSWORD password
+
+#spawn启动的命令的输出可以被expect捕获到
+spawn rsync -rv -e ssh $&#123;SRC_DIRECTORY&#125; $&#123;DST_DIRECTORY&#125;
+expect &quot;password:&quot;
+send &quot;$&#123;PASSWORD&#125;\r&quot;
+interact
+</code></pre>
+<h2 id="监听脚本"><a href="#监听脚本" class="headerlink" title="监听脚本"></a>监听脚本</h2><pre><code>#!/bin/sh
+
+#失败后不退出
+set +e
+#回显命令
+set -v on
+
+set SRC_DIRECTORY src
+set DST_DIRECTORY ubuntu@xx.xx.xx.xx:dest_parent/
+# 或者 尾部很重要
+# set SRC_DIRECTORY src/
+# set DST_DIRECTORY ubuntu@xx.xx.xx.xx:dest
+
+# echo $SRC_DIRECTORY
+
+#fswatch -o -l 3 $SRC_DIRECTORY | xargs -n1 -I&#123;&#125; expect fsync.sh
+#上面那种方案没成功，有空在研究
+#在主机.ssh/authorized_key加入客户端ssh key后直接用了下面一种方案
+fswatch -o -l 3 $SRC_DIRECTORY | xargs -n1 -I&#123;&#125; rsync -rvu --delete --exclude-from=&#39;ignore.txt&#39; -e ssh $&#123;SRC_DIRECTORY&#125; $&#123;DST_DIRECTORY&#125;
+</code></pre>
+<h2 id="忽略文件列表示例"><a href="#忽略文件列表示例" class="headerlink" title="忽略文件列表示例"></a>忽略文件列表示例</h2><pre><code>build_out/
+# 注意区别下面这句只会忽略build_out下的子目录，不会忽略build_out本身
+# build_out/*
+build/*
+helloworld
+</code></pre>
+<h1 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/emcrisostomo/fswatch">fswatch</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wangqiguo/p/6464234.html">xargs命令详解，xargs与管道的区别</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/70556b1ce932">Linux Expect 简介和使用实例</a></li>
+<li><a target="_blank" rel="noopener" href="https://askubuntu.com/questions/85137/rsync-not-actually-copying-files">rsync not actually copying files</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">简单的介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8fswatch%E7%9B%91%E5%90%AC%E6%96%87%E4%BB%B6%E5%8F%98%E5%8C%96"><span class="nav-number">2.1.</span> <span class="nav-text">使用fswatch监听文件变化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8xargs%E4%BC%A0%E9%80%92%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0-%E5%92%8C%E7%AE%A1%E9%81%93%E7%9A%84%E5%8C%BA%E5%88%AB-%E2%80%98-%E2%80%99"><span class="nav-number">2.2.</span> <span class="nav-text">使用xargs传递命令参数(和管道的区别 ‘|’ )</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8expect"><span class="nav-number">2.3.</span> <span class="nav-text">使用expect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8rsync%E5%90%8C%E6%AD%A5%E6%96%87%E4%BB%B6"><span class="nav-number">2.4.</span> <span class="nav-text">使用rsync同步文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E8%84%9A%E6%9C%AC"><span class="nav-number">3.</span> <span class="nav-text">最终脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E8%84%9A%E6%9C%AC"><span class="nav-number">3.1.</span> <span class="nav-text">同步脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%91%E5%90%AC%E8%84%9A%E6%9C%AC"><span class="nav-number">3.2.</span> <span class="nav-text">监听脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%BD%E7%95%A5%E6%96%87%E4%BB%B6%E5%88%97%E8%A1%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.3.</span> <span class="nav-text">忽略文件列表示例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">4.</span> <span class="nav-text">参考资源</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Leo Dong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo Dong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
